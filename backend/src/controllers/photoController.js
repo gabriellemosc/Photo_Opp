@@ -9,7 +9,7 @@ const createPhoto = async (req, res) => {
       return res.status(400).json({ error: 'Imagem obrigatória' }) // valida se enviou arquivo
     }
 
-    const promoterId = 1 // pega id do usuário autenticado (RBAC)
+    const promoterId = req.user.id // pega id do usuário autenticado (RBAC)
 
     // envia para S3
     const s3Url = await uploadToS3(req.file)
