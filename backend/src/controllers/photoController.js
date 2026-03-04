@@ -33,4 +33,44 @@ const createPhoto = async (req, res) => {
   }
 }
 
-module.exports = { createPhoto }
+const deletePhoto = async (req, res) => {
+  try {
+
+    const photoId = req.params.id // pega id da foto da URL
+    const userId = req.user.id // id do usuário autenticado
+    const userRole = req.user.role // role do usuário
+
+    // 1️⃣ Verifica se a foto existe
+    const photoResult = await pool.query(
+      'SELECT * FROM photos WHERE id = $1',
+      [photoId]
+    )
+
+    if (photoResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Foto não encontrada' })
+    }
+
+    const photo = photoResult.rows[0]
+
+    // 2️⃣ Regra de autorização extra (segurança adicional)
+    // ADMIN pode deletar qualquer foto
+    // PROMOTOR só pode deletar as próprias fotos
+    if (userRole !== 'ADMIN' && photo.promoter_id !== userId) {
+      return res.status(403).json({ error: 'Acesso negado' })
+    }
+
+    // 3️⃣ Deleta registro do banco
+    await pool.query(
+      'DELETE FROM photos WHERE id = $1',
+      [photoId]
+    )
+
+    return res.status(200).json({ message: 'Foto deletada com sucesso' })
+
+  } catch (error) {
+    console.error(error)
+    return res.status(500).json({ error: 'Erro ao deletar foto' })
+  }
+}
+
+module.exports = { createPhoto, deletePhoto }

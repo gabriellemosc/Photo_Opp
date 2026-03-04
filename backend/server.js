@@ -15,3 +15,8 @@ app.listen(3000, () => {
 const authRoutes = require('./src/routes/authRoutes')
 
 app.use('/auth', authRoutes)
+
+//separation of domains
+const activationRoutes = require('./src/routes/activationRoutes')
+
+app.use('/activation', activationRoutes)
