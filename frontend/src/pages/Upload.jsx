@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react"
 import "./Upload.css"
 import frame from "../assets/images/frame.png" // importa moldura do figma
+import { useNavigate } from "react-router-dom"
+
 
 function Upload() {
 
+  const navigate = useNavigate() // cria função de navegação
+  
   const videoRef = useRef(null) // referencia do video (camera)
   const canvasRef = useRef(null) // referencia do canvas
   const [count, setCount] = useState(3) // contador
@@ -87,29 +91,35 @@ function Upload() {
   async function sendPhoto() {
 
     const blob = await fetch(photo).then(r => r.blob()) // converte base64 para blob
-
+  
     const formData = new FormData()
-
+  
     formData.append("image", blob, "photo.png") // adiciona imagem no form
-
+  
     const token = localStorage.getItem("token")
-
+  
     const response = await fetch("http://localhost:3000/activation/upload", {
-
+  
       method: "POST",
-
+  
       headers: {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token}` // envia token
       },
-
+  
       body: formData
-
+  
     })
-
-    const data = await response.json()
-
+  
+    const data = await response.json() // aqui criamos data
+  
     console.log("Resposta backend:", data)
-
+  
+    navigate("/result", {
+      state: {
+        imageUrl: data.s3_url // agora data existe
+      }
+    })
+  
   }
 
   return (
