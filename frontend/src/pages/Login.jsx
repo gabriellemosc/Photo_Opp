@@ -1,9 +1,11 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 function Login() {
 
   const [email, setEmail] = useState("") // estado para armazenar email
   const [password, setPassword] = useState("") // estado para senha
+  const navigate = useNavigate()
 
   async function handleSubmit(e) {
 
@@ -30,6 +32,8 @@ function Login() {
       const data = await response.json() // converte resposta para JSON
 
       localStorage.setItem("token", data.token) // salva token
+
+      navigate("/upload")
 
     } catch (error) {
 
