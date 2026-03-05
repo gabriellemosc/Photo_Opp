@@ -3,18 +3,18 @@ import "./Upload.css"
 import frame from "../assets/images/frame.png" // importa moldura do figma
 import { useNavigate } from "react-router-dom"
 
-
 function Upload() {
-
   const navigate = useNavigate() // cria função de navegação
-  
   const videoRef = useRef(null) // referencia do video (camera)
   const canvasRef = useRef(null) // referencia do canvas
   const [count, setCount] = useState(3) // contador
   const [photo, setPhoto] = useState(null) // foto capturada
   const [stream, setStream] = useState(null) // stream da camera
+  const [started, setStarted] = useState(false) // controla se usuário clicou em iniciar
+
 
   useEffect(() => {
+    if (!started) return // só inicia câmera depois de clicar iniciar
 
     async function startCamera() {
 
@@ -32,31 +32,37 @@ function Upload() {
 
     startCamera()
 
-  }, [])
+  }, [started])
 
   useEffect(() => {
 
-    if (photo) return // se já tirou foto não conta
-
-    if (count === 0) {
-      takePhoto() // quando contador chega a 0 tira foto
-      return
-    }
-
+    if (!started) return // só inicia depois de clicar iniciar
+    if (photo) return // se já tirou foto, para
+    if (count <= 0) return // evita números negativos
+  
     const timer = setTimeout(() => {
-      setCount(count - 1)
+  
+      if (count === 1) {
+        takePhoto() // quando estiver em 1, dispara a foto
+      }
+  
+      setCount(prev => prev - 1) // diminui contador
+  
     }, 1000)
-
-    return () => clearTimeout(timer)
-
-  }, [count, photo])
+  
+    return () => clearTimeout(timer) // limpa timeout
+  
+  }, [count, started, photo])
 
 
   function takePhoto() {
 
+    console.log("tirando foto...") // debug
+
     const video = videoRef.current
     const canvas = canvasRef.current
-  if (video.readyState !== 4) {
+
+  if (!video.videoWidth || !video.videoHeight) {
     console.log("video ainda não está pronto")
     return
   }
@@ -86,6 +92,13 @@ function Upload() {
     setCount(3) // reinicia contador
     window.location.reload() // reinicia camera
 
+  }
+
+  function startExperience() {
+
+    setStarted(true) // inicia experiência
+    setCount(3) // inicia contador
+  
   }
 
   async function sendPhoto() {
@@ -120,6 +133,24 @@ function Upload() {
       }
     })
   
+  }
+
+  if (!started) {
+
+    return (
+
+      <div className="startScreen">
+
+        <h1>Photo App</h1>
+
+        <button onClick={startExperience}>
+          Iniciar
+        </button>
+
+      </div>
+
+    )
+
   }
 
   return (

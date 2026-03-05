@@ -77,3 +77,24 @@
     font-size:16px;
     cursor:pointer;
   }
+
+  .startScreen{
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    gap:30px;
+    background:black;
+    color:white;
+  }
+  
+  .startScreen button{
+    padding:15px 40px;
+    font-size:20px;
+    border:none;
+    border-radius:10px;
+    background:#ff0055;
+    color:white;
+    cursor:pointer;
+  }

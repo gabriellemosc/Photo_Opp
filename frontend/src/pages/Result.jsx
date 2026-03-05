@@ -4,14 +4,24 @@ import { useLocation } from "react-router-dom"
 function Result() {
 
   const location = useLocation() // pega dados enviados pela rota
-  const imageUrl = location.state?.imageUrl // URL do S3
+  const imageUrl = location.state?.imageUrl // URL da imagem no S3
 
-  function downloadImage() {
+  async function downloadImage() { // função async para permitir uso de await
 
-    const link = document.createElement("a") // cria link virtual
-    link.href = imageUrl // define URL da imagem
-    link.download = "photo.png" // nome do arquivo
-    link.click() // dispara download
+    const response = await fetch(imageUrl) // faz requisição HTTP para baixar imagem
+    const blob = await response.blob() // transforma resposta em arquivo blob
+
+    const url = window.URL.createObjectURL(blob) // cria URL temporária para o arquivo
+
+    const link = document.createElement("a") // cria elemento <a> dinamicamente
+    link.href = url // aponta para o blob gerado
+    link.download = "photo.png" // define nome do arquivo no download
+
+    document.body.appendChild(link) // adiciona link ao DOM
+    link.click() // dispara download automaticamente
+
+    link.remove() // remove elemento do DOM
+    window.URL.revokeObjectURL(url) // libera memória usada pela URL temporária
 
   }
 
@@ -24,7 +34,7 @@ function Result() {
       <div className="qrBox">
 
         <QRCodeCanvas
-          value={imageUrl} // QR Code aponta para URL do S3
+          value={imageUrl} // QR Code aponta para URL da imagem
           size={180}
         />
 
