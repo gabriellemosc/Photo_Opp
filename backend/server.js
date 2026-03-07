@@ -28,3 +28,4 @@ app.use('/activation', activationRoutes)
 const adminRoutes = require('./src/routes/adminRoutes')
 app.use('/admin', adminRoutes) // registra rotas admin
 
+module.exports = app; // Adicione isso aqui!
