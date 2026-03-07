@@ -150,7 +150,8 @@ function Upload() {
     formData.append("image", blob, "photo.png") // adiciona imagem no form
   
     const token = localStorage.getItem("token")
-  
+    console.log("Token enviado:", token); // <-- VEJA O QUE APARECE NO CONSOLE DO NAVEGADOR
+    
     const response = await fetch(`${API_URL}/activation/upload`, {
   
       method: "POST",
