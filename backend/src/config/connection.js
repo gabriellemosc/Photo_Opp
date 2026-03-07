@@ -10,7 +10,9 @@ if (!global.ACTIVACAO_POOL) {
     user: process.env.ACTIVACAO_DB_USER,
     password: process.env.ACTIVACAO_DB_PASSWORD,
     database: process.env.ACTIVACAO_DB_NAME,
-    port: process.env.ACTIVACAO_DB_PORT
+    port: process.env.ACTIVACAO_DB_PORT,
+    ssl: { rejectUnauthorized: false } // ❌ SSL obrigatório para Supabase
+
   });
   global.ACTIVACAO_POOL = pool;
 } else {
