@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import "./Upload.css"
 import frame from "../assets/images/frame.png" // importa moldura do figma
 import { useNavigate } from "react-router-dom"
+import logo from "../assets/images/Nex_Lab_horizontal.svg"
 
 function Upload() {
 
@@ -162,16 +163,26 @@ function Upload() {
 
     return (
 
-      <div className="startScreen">
+      <div className="startScreen"> {/* container principal da tela */}
 
-        <h1>Photo App</h1>
-
-        <button onClick={startExperience}>
-          Iniciar
-        </button>
-
-      </div>
-
+      <img 
+        src={logo} // logo svg importada
+        alt="NexLab"
+        className="logo"
+      />
+  
+      <h1 className="title">
+        Photo <br/> Opp
+      </h1> {/* quebra de linha para ficar igual ao layout */}
+  
+      <button 
+        className="startButton"
+        onClick={startExperience} // função que inicia experiência
+      >
+        Iniciar
+      </button>
+  
+    </div>
     )
 
   }

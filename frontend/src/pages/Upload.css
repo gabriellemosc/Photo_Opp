@@ -85,7 +85,6 @@
     justify-content:center;
     align-items:center;
     gap:30px;
-    background:black;
     color:white;
   }
   
@@ -98,3 +97,87 @@
     color:white;
     cursor:pointer;
   }
+
+  /* remove margem padrão */
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* tela inicial */
+.startScreen{
+
+  height:100vh; /* ocupa toda tela */
+
+  display:flex; /* ativa flexbox */
+  flex-direction:column; /* organiza elementos em coluna */
+
+  justify-content:space-between; /* topo / meio / baixo */
+
+  align-items:center; /* centraliza horizontalmente */
+
+  padding:40px 20px; /* espaçamento interno */
+
+  background:linear-gradient(
+    180deg,
+    #e4e4e4,
+    #bdbdbd
+  ); /* gradiente cinza parecido com o design */
+
+}
+
+/* logo */
+.logo{
+
+  width:120px; /* tamanho da logo */
+
+  margin-top:10px; /* espaço do topo */
+
+}
+
+/* titulo gigante */
+.title{
+
+  font-size:110px; /* tamanho grande como no layout */
+
+  font-weight:900; /* peso da fonte */
+
+  text-align:center; /* centraliza texto */
+
+  line-height:0.9; /* aproxima linhas Photo / Opp */
+
+  color:black;
+
+}
+
+/* botão iniciar */
+.startButton{
+
+  width:85%; /* botão largo */
+
+  max-width:500px; /* limite máximo */
+
+  padding:18px; /* altura do botão */
+
+  background:#6b6b6b; /* cinza escuro */
+
+  color:white;
+
+  border:none;
+
+  font-size:22px;
+
+  font-weight:bold;
+
+  cursor:pointer;
+
+  margin-bottom:30px; /* espaço inferior */
+
+}
+
+/* efeito hover */
+.startButton:hover{
+
+  background:#505050;
+
+}
