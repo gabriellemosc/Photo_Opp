@@ -17,7 +17,7 @@ const uploadToS3 = async (file) => {
   const fileKey = `photos/${uuidv4()}.jpg` 
 
   const command = new PutObjectCommand({
-    Bucket: process.env.AWS_BUCKET, 
+    Bucket: process.env.ACTIVACAO_AWS_BUCKET, 
     Key: fileKey, 
     Body: file.buffer, 
     ContentType: file.mimetype 
@@ -26,7 +26,7 @@ const uploadToS3 = async (file) => {
   await s3.send(command) // send  AWS
 
   //  URL public
-  return `https://${process.env.AWS_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`
+  return `https://${process.env.ACTIVACAO_AWS_BUCKET}.s3.${process.env.ACTIVACAO_AWS_REGION}}.amazonaws.com/${fileKey}`
 }
 
 module.exports = uploadToS3
