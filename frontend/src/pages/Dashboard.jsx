@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
 import { getPhotos } from "../services/api"
 import { QRCodeCanvas } from "qrcode.react"
+import './Dashboard.css';
+
 
 function Dashboard(){
 
@@ -79,124 +81,164 @@ function Dashboard(){
   if(!stats) return <p>Carregando...</p>
 
 
-  return(
-
-    <div>
-
-      <h1>Painel Administrativo</h1>
+  return (
+    <div className="dashboard-container">
+      <header className="dashboard-header">
+        <h1>Painel Administrativo</h1>
+        <div className="header-actions">
+          <span className="date-indicator">{new Date().toLocaleDateString('pt-BR')}</span>
+        </div>
+      </header>
 
       {/* ============================= */}
       {/* MÉTRICAS */}
       {/* ============================= */}
 
-      <h2>Total de fotos: {stats.totalPhotos}</h2>
-      <h2>Fotos hoje: {stats.todayPhotos}</h2>
-
+      <div className="metrics-grid">
+        <div className="metric-card">
+          <div className="metric-icon">📸</div>
+          <div className="metric-content">
+            <span className="metric-label">Total de Fotos</span>
+            <span className="metric-value">{stats.totalPhotos}</span>
+          </div>
+        </div>
+        
+        <div className="metric-card">
+          <div className="metric-icon">✨</div>
+          <div className="metric-content">
+            <span className="metric-label">Fotos Hoje</span>
+            <span className="metric-value">{stats.todayPhotos}</span>
+          </div>
+        </div>
+      </div>
 
       {/* ============================= */}
       {/* FILTROS */}
       {/* ============================= */}
 
-      <div>
-
+      <div className="filters-section">
         <h3>Filtros</h3>
-        <input type="datetime-local" value={startDate} onChange={e => setStartDate(e.target.value)} />
-        <input type="datetime-local" value={endDate} onChange={e => setEndDate(e.target.value)} />
-        <button onClick={() => { setPage(1); loadPhotos() }}>Filtrar</button>
+        <div className="filters-container">
+          <div className="date-inputs">
+            <div className="input-group">
+              <label>Data Inicial</label>
+              <input 
+                type="datetime-local" 
+                value={startDate} 
+                onChange={e => setStartDate(e.target.value)} 
+                className="date-input"
+              />
+            </div>
+            <div className="input-group">
+              <label>Data Final</label>
+              <input 
+                type="datetime-local" 
+                value={endDate} 
+                onChange={e => setEndDate(e.target.value)} 
+                className="date-input"
+              />
+            </div>
+          </div>
+          <div className="filter-actions">
+            <button onClick={() => { setPage(1); loadPhotos() }} className="btn btn-primary">
+              Filtrar
+            </button>
+            <button onClick={() => {
+              setStartDate('')
+              setEndDate('')
+              setPage(1)
+              loadPhotos()
+            }} className="btn btn-outline">
+              Redefinir Filtros
+            </button>
+          </div>
+        </div>
+      </div>
 
-        <button disabled={page === 1} onClick={() => { setPage(page - 1); loadPhotos() }}>Anterior</button>
-            <button onClick={() => { setPage(page + 1); loadPhotos() }}>Próximo</button>
-            <select value={limit} onChange={e => { setLimit(parseInt(e.target.value)); setPage(1); loadPhotos() }}>
+      {/* ============================= */}
+      {/* CONTROLES DE PÁGINA */}
+      {/* ============================= */}
+
+      <div className="pagination-controls">
+        <div className="per-page-selector">
+          <label>Fotos por página:</label>
+          <select
+            value={limit}
+            onChange={(e) => setLimit(Number(e.target.value))}
+            className="per-page-select"
+          >
             <option value={5}>5</option>
             <option value={10}>10</option>
             <option value={20}>20</option>
-            </select>
-
+          </select>
+        </div>
       </div>
-
-
-      {/* ============================= */}
-      {/* PAGINAÇÃO */}
-      {/* ============================= */}
-
-      <div>
-
-        <label>Fotos por página:</label>
-
-        <select
-          value={limit}
-          onChange={(e)=>setLimit(Number(e.target.value))} // altera limite
-        >
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={20}>20</option>
-        </select>
-
-      </div>
-
 
       {/* ============================= */}
       {/* LISTA DE FOTOS */}
       {/* ============================= */}
 
-      <div style={{display:"flex",flexWrap:"wrap",gap:"20px"}}>
-
+      <div className="photos-grid">
         {photos.map(photo => (
-
-            <img
-            key={photo.id}
-            src={photo.s3_url}
-            width="200"
-            style={{cursor:"pointer"}}
-            onClick={() => setSelectedPhoto(photo)} // <-- seta a foto selecionada
-            />
-
+          <div key={photo.id} className="photo-card" onClick={() => setSelectedPhoto(photo)}>
+            <div className="photo-wrapper">
+              <img
+                src={photo.s3_url}
+                alt={`Foto ${photo.id}`}
+                className="photo-image"
+              />
+              <div className="photo-overlay">
+                <span className="view-qr">Ver QR Code</span>
+              </div>
+            </div>
+          </div>
         ))}
-
       </div>
 
-
       {/* ============================= */}
-      {/* CONTROLE DE PAGINA */}
+      {/* CONTROLE DE PAGINAÇÃO */}
       {/* ============================= */}
 
-      <div style={{marginTop:"20px"}}>
-
-        <button onClick={()=>setPage(page-1)} disabled={page===1}>
-          Anterior
+      <div className="pagination">
+        <button 
+          onClick={() => setPage(page - 1)} 
+          disabled={page === 1}
+          className="pagination-btn"
+        >
+          ← Anterior
         </button>
-
-        <span> Página {page} </span>
-
-        <button onClick={()=>setPage(page+1)}>
-          Próxima
+        
+        <span className="page-indicator">Página {page}</span>
+        
+        <button 
+          onClick={() => setPage(page + 1)}
+          className="pagination-btn"
+        >
+          Próxima →
         </button>
-
       </div>
 
+      {/* ============================= */}
+      {/* MODAL QR CODE */}
+      {/* ============================= */}
 
       {selectedPhoto && (
-        <div style={{
-          position: "fixed", top: 0, left: 0, width: "100%", height: "100%",
-          backgroundColor: "rgba(0,0,0,0.5)", display: "flex",
-          justifyContent: "center", alignItems: "center"
-        }}>
-          <div style={{ backgroundColor: "white", padding: "20px", borderRadius: "8px", textAlign: "center" }}>
+        <div className="modal-overlay" onClick={() => setSelectedPhoto(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelectedPhoto(null)}>×</button>
             <h3>QR Code da Foto</h3>
-            <QRCodeCanvas value={selectedPhoto.s3_url} size={200} />
-                        <div style={{ marginTop: "10px" }}>
-              <button onClick={() => setSelectedPhoto(null)}>Fechar</button>
+            <div className="qr-container">
+              <QRCodeCanvas value={selectedPhoto.s3_url} size={250} />
             </div>
+            <p className="qr-instruction">Escaneie para acessar a foto</p>
+            <button onClick={() => setSelectedPhoto(null)} className="btn btn-primary">
+              Fechar
+            </button>
           </div>
         </div>
       )}
-
-
-
     </div>
+  );
+};
 
-  )
-
-}
-
-export default Dashboard
+export default Dashboard;

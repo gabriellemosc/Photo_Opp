@@ -30,10 +30,15 @@ function Login() {
     
 
       const data = await response.json() // converte resposta para JSON
+      if(!response.ok){ // verifica erro do backend
+        alert(data.error || "Erro no login")
+        return
+      }
+  
 
       localStorage.setItem("token", data.token) // salva token
 
-      if(data.user.role == "ADMIN"){
+      if(data.user?.role == "ADMIN"){
 
         navigate("/dashboard")
 
