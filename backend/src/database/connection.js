@@ -1,5 +1,4 @@
 const { Pool } = require('pg') // importa Pool
-require('dotenv').config() // carrega .env
 
 const pool = new Pool({
   host: process.env.DB_HOST,

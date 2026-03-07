@@ -1,6 +1,5 @@
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3") // client S3
 const { v4: uuidv4 } = require('uuid') 
-require('dotenv').config() 
 
 
 

@@ -1,7 +1,6 @@
 const pool = require('../database/connection') // conexão PostgreSQL
 const uploadToS3 = require('../services/s3') // serviço S3
 const { S3Client, ListObjectsV2Command } = require("@aws-sdk/client-s3") // importa list
-require('dotenv').config() 
 
 // instancia S3 (igual ao s3.js)
 const s3 = new S3Client({

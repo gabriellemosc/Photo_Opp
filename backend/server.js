@@ -1,6 +1,5 @@
 const express = require('express') // importa express
 const cors = require('cors') // importa middleware CORS
-require('dotenv').config() // carrega variáveis do .env
 
 const app = express() // cria aplicação
 
