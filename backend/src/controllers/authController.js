@@ -6,7 +6,6 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body 
 
-    // 1. Busca usuário (Aqui o pool usará as variáveis ACTIVACAO_DB...)
     const query = 'SELECT * FROM users WHERE email = $1'
     const result = await pool.query(query, [email])
 
@@ -16,20 +15,18 @@ const login = async (req, res) => {
 
     const user = result.rows[0]
 
-    // 2. Compara senha
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
       return res.status(401).json({ error: 'Credenciais inválidas' })
     }
 
-    // 3. Gera token JWT (AJUSTADO PARA O NOME NA VERCEL)
     const token = jwt.sign(
       {
         id: user.id,
         role: user.role
       },
-      process.env.ACTIVACAO_JWT_SECRET, // Mudança aqui!
+      process.env.ACTIVACAO_JWT_SECRET,
       { expiresIn: '8h' }
     )
 
@@ -43,10 +40,12 @@ const login = async (req, res) => {
     })
 
   } catch (error) {
-    // Log detalhado para você ver na Vercel o que falhou
-    console.error("ERRO NO LOGIN:", error.message)
-    return res.status(500).json({ error: 'Erro interno no servidor' })
-  }
-}
+    console.error("ERRO DETALHADO:", error)
+    return res.status(500).json({ 
+      error: 'Erro no login', 
+      details: error.message 
+    })
+  } // <--- Esta chave fecha o bloco try/catch
+} // <--- Esta chave fecha a função login
 
 module.exports = { login }
