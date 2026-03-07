@@ -1,13 +1,13 @@
-const pool = require('../database/connection') // conexão PostgreSQL
-const bcrypt = require('bcrypt') // criptografia
-const jwt = require('jsonwebtoken') // geração de token
+const pool = require('../database/connection') 
+const bcrypt = require('bcrypt') 
+const jwt = require('jsonwebtoken') 
 require('dotenv').config()
 
 const login = async (req, res) => {
   try {
-    const { email, password } = req.body // pega dados enviados
+    const { email, password } = req.body 
 
-    // busca usuário pelo email
+    // 1. Busca usuário (Aqui o pool usará as variáveis ACTIVACAO_DB...)
     const query = 'SELECT * FROM users WHERE email = $1'
     const result = await pool.query(query, [email])
 
@@ -17,20 +17,20 @@ const login = async (req, res) => {
 
     const user = result.rows[0]
 
-    // compara senha enviada com hash salvo
+    // 2. Compara senha
     const isMatch = await bcrypt.compare(password, user.password)
 
     if (!isMatch) {
       return res.status(401).json({ error: 'Credenciais inválidas' })
     }
 
-    // gera token JWT
+    // 3. Gera token JWT (AJUSTADO PARA O NOME NA VERCEL)
     const token = jwt.sign(
       {
         id: user.id,
         role: user.role
       },
-      process.env.JWT_SECRET,
+      process.env.ACTIVACAO_JWT_SECRET, // Mudança aqui!
       { expiresIn: '8h' }
     )
 
@@ -43,10 +43,10 @@ const login = async (req, res) => {
       }
     })
 
-    
   } catch (error) {
-    console.error(error)
-    return res.status(500).json({ error: 'Erro no login' })
+    // Log detalhado para você ver na Vercel o que falhou
+    console.error("ERRO NO LOGIN:", error.message)
+    return res.status(500).json({ error: 'Erro interno no servidor' })
   }
 }
 
