@@ -34,7 +34,7 @@ function Login() {
     
 
       const data = await response.json() // converte resposta para JSON
-      
+
       if(!response.ok){ // verifica erro do backend
         alert(data.error || "Erro no login")
         return
@@ -42,6 +42,9 @@ function Login() {
   
 
       localStorage.setItem("token", data.token) // salva token
+
+          // ✅ salvar dados do usuário para ProtectedRoutes
+    localStorage.setItem("user", JSON.stringify(data.user));
 
       if(data.user?.role == "ADMIN"){
 
