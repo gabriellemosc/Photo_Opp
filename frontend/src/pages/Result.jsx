@@ -73,13 +73,14 @@ function Result() {
 
       {showThanksBox && (
 
+      <div className="thanksOverlay"> 
         <div className="thanksPopup">
 
           <h2>Obrigado!</h2>
           <p>Preparando sua tela de download...</p>
 
         </div>
-
+        </div>
       )}
 
     </div>
