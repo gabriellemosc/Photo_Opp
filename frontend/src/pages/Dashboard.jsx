@@ -51,7 +51,7 @@ function Dashboard(){
 
       const token = localStorage.getItem("token")
 
-      const res = await fetch(`${API_URL}/admin/stats{}`,{
+      const res = await fetch(`${API_URL}/admin/stats`,{
         headers:{
           Authorization:`Bearer ${token}`
         }
