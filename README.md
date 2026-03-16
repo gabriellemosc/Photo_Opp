@@ -1,4 +1,4 @@
-#  Photo Opp Challenge – Nex Lab
+#  Photo Opp  – 
 
 Aplicação desenvolvida para o **desafio técnico Fullstack da Nex Lab**.
 
