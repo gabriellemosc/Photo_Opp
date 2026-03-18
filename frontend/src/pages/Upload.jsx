@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import "./Upload.css"
 import { useNavigate } from "react-router-dom"
-import logo from "../assets/images/Nex_Lab_horizontal.svg"
 import moldura from "../assets/images/moldura.png" // importa a moldura png
 
 const API_URL = import.meta.env.VITE_API_URL.replace(/\/$/, '') // remove barra final
@@ -175,11 +174,7 @@ function Upload() {
 
       <div className="startScreen"> {/* container principal */}
 
-      <img 
-        src={logo} // logo svg 
-        alt="NexLab"
-        className="logo"
-      />
+    
   
       <h1 className="title">
         Photo <br/> Opp

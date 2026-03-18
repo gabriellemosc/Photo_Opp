@@ -73,13 +73,6 @@ function Login() {
       <div className="login-box"> 
 
 
-      <div className="logo"> 
-          <div className="logo-square"></div> 
-          <img 
-  src={logo} 
-  alt="Nex Lab Logo" 
-  className="logo-img" 
-/>        </div>
 
 
         <h1 className="login-title">Login</h1> 

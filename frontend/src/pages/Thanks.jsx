@@ -30,7 +30,6 @@ function Thanks(){
     </button>
 
     
-      <img src={logo} alt="NEX .lab" className="nexLabLogo" />
 
      
       
