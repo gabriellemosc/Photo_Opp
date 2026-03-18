@@ -1,6 +1,5 @@
 #  Photo Opp  
 
-Aplicação desenvolvida para o **desafio técnico Fullstack da Nex Lab**.
 
 O projeto simula uma **ativação interativa em um estande de evento**, onde o participante:
 
